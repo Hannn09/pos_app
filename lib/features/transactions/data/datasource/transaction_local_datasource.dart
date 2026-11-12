@@ -14,16 +14,13 @@ class TransactionLocalDataSource {
   Future<void> saveTransaction(PosTransaction tx) async {
     final db = await _dbHelper.database;
 
-    // Atomic SQLite Transaction
     await db.transaction((txn) async {
-      // 1. Simpan Header Transaksi
       await txn.insert(
         AppTables.transactions,
         TransactionTableModel.toMap(tx),
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
 
-      // 2. Loop detail CartItem
       int itemIndex = 0;
       for (final item in tx.items) {
         itemIndex++;
@@ -45,14 +42,12 @@ class TransactionLocalDataSource {
           conflictAlgorithm: ConflictAlgorithm.replace,
         );
 
-        // 3. Potong stok produk
         await txn.rawUpdate('''
           UPDATE ${AppTables.products}
           SET ${ProductColumns.stock} = MAX(0, ${ProductColumns.stock} - ?)
           WHERE ${ProductColumns.id} = ?
         ''', [item.quantity, item.product.id]);
 
-        // 4. Catat Log Inventori Produk
         await txn.insert(
           AppTables.inventoryLogs,
           {
@@ -68,7 +63,6 @@ class TransactionLocalDataSource {
           },
         );
 
-        // 5. Potong stok Addon jika ada
         int addonIndex = 0;
         for (final addon in item.selectedAddons) {
           addonIndex++;

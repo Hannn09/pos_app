@@ -34,7 +34,6 @@ class ProductLocalDataSource {
       result.add(CategoryTableModel.fromMap(row, itemCount: count));
     }
 
-    // Sisipkan kategori virtual 'All Menu' di index pertama
     result.insert(
       0,
       PosCategory(
@@ -130,7 +129,6 @@ class ProductLocalDataSource {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
 
-      // Re-map product addons
       await txn.delete(
         AppTables.productAddons,
         where: '${ProductAddonColumns.productId} = ?',

@@ -22,7 +22,6 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDB(String fileName) async {
-    // Inisialisasi SQLite FFI untuk platform desktop (Windows, macOS, Linux)
     if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
       sqfliteFfiInit();
       databaseFactory = databaseFactoryFfi;
@@ -36,7 +35,6 @@ class DatabaseHelper {
       path,
       version: dbVersion,
       onConfigure: (db) async {
-        // SQLite foreign key enforcement
         await db.execute('PRAGMA foreign_keys = ON');
       },
       onCreate: _createDB,
@@ -45,7 +43,6 @@ class DatabaseHelper {
   }
 
   Future<void> _createDB(Database db, int version) async {
-    // 1. Users Table
     await db.execute('''
       CREATE TABLE ${AppTables.users} (
         ${UserColumns.id} TEXT PRIMARY KEY,
@@ -60,7 +57,6 @@ class DatabaseHelper {
       );
     ''');
 
-    // 2. Categories Table
     await db.execute('''
       CREATE TABLE ${AppTables.categories} (
         ${CategoryColumns.id} TEXT PRIMARY KEY,
@@ -71,7 +67,6 @@ class DatabaseHelper {
       );
     ''');
 
-    // 3. Products Table
     await db.execute('''
       CREATE TABLE ${AppTables.products} (
         ${ProductColumns.id} TEXT PRIMARY KEY,
@@ -91,7 +86,6 @@ class DatabaseHelper {
       );
     ''');
 
-    // 4. Addons Table
     await db.execute('''
       CREATE TABLE ${AppTables.addons} (
         ${AddonColumns.id} TEXT PRIMARY KEY,
@@ -103,7 +97,6 @@ class DatabaseHelper {
       );
     ''');
 
-    // 5. Product Addons Junction Table
     await db.execute('''
       CREATE TABLE ${AppTables.productAddons} (
         ${ProductAddonColumns.productId} TEXT NOT NULL,
@@ -114,7 +107,6 @@ class DatabaseHelper {
       );
     ''');
 
-    // 6. Transactions Table
     await db.execute('''
       CREATE TABLE ${AppTables.transactions} (
         ${TransactionColumns.id} TEXT PRIMARY KEY,
@@ -143,7 +135,6 @@ class DatabaseHelper {
       );
     ''');
 
-    // 7. Transaction Items Table
     await db.execute('''
       CREATE TABLE ${AppTables.transactionItems} (
         ${TransactionItemColumns.id} TEXT PRIMARY KEY,
@@ -160,7 +151,6 @@ class DatabaseHelper {
       );
     ''');
 
-    // 8. Transaction Item Addons Table
     await db.execute('''
       CREATE TABLE ${AppTables.transactionItemAddons} (
         ${TransactionItemAddonColumns.id} TEXT PRIMARY KEY,
@@ -175,7 +165,6 @@ class DatabaseHelper {
       );
     ''');
 
-    // 9. Inventory Logs Table
     await db.execute('''
       CREATE TABLE ${AppTables.inventoryLogs} (
         ${InventoryLogColumns.id} TEXT PRIMARY KEY,
@@ -190,7 +179,6 @@ class DatabaseHelper {
       );
     ''');
 
-    // 10. Store Settings Table
     await db.execute('''
       CREATE TABLE ${AppTables.storeSettings} (
         ${StoreSettingColumns.id} TEXT PRIMARY KEY,
@@ -205,7 +193,6 @@ class DatabaseHelper {
       );
     ''');
 
-    // Indexes
     await db.execute('CREATE INDEX idx_products_category ON ${AppTables.products} (${ProductColumns.categoryId});');
     await db.execute('CREATE INDEX idx_products_name ON ${AppTables.products} (${ProductColumns.name});');
     await db.execute('CREATE INDEX idx_transactions_created_at ON ${AppTables.transactions} (${TransactionColumns.createdAt});');
@@ -213,15 +200,11 @@ class DatabaseHelper {
     await db.execute('CREATE INDEX idx_tx_items_transaction ON ${AppTables.transactionItems} (${TransactionItemColumns.transactionId});');
     await db.execute('CREATE INDEX idx_tx_item_addons_item ON ${AppTables.transactionItemAddons} (${TransactionItemAddonColumns.transactionItemId});');
 
-    // Seed Initial Data
     await InitialDataSeeder.seedAll(db);
   }
 
-  Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {
-    // Migration script jika ada upgrade versi db
-  }
+  Future<void> _upgradeDB(Database db, int oldVersion, int newVersion) async {}
 
-  /// Utility untuk monitoring skema tabel & baris data lewat console dan UI
   Future<Map<String, int>> inspectDatabase() async {
     final db = await database;
     final dbPath = await getDatabasesPath();
@@ -246,7 +229,6 @@ class DatabaseHelper {
     return summary;
   }
 
-  /// Tutup koneksi database
   Future<void> close() async {
     final db = _database;
     if (db != null) {
@@ -255,7 +237,6 @@ class DatabaseHelper {
     }
   }
 
-  /// Reset database (Hapus dan buat ulang untuk dev/testing)
   Future<void> resetDatabase() async {
     if (!kIsWeb && (Platform.isWindows || Platform.isLinux || Platform.isMacOS)) {
       sqfliteFfiInit();

@@ -55,7 +55,6 @@ class ReceiptScreen extends ConsumerWidget {
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
         child: Column(
           children: [
-            // Thermal Receipt Paper Card
             Container(
               decoration: BoxDecoration(
                 color: whiteColor,
@@ -71,7 +70,6 @@ class ReceiptScreen extends ConsumerWidget {
               ),
               child: Column(
                 children: [
-                  // Receipt Header
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 24, 20, 16),
                     child: Column(
@@ -109,7 +107,6 @@ class ReceiptScreen extends ConsumerWidget {
                           ),
                         ),
                         const SizedBox(height: 12),
-                        // Status Chip
                         Container(
                           padding: const EdgeInsets.symmetric(
                             horizontal: 10,
@@ -142,10 +139,8 @@ class ReceiptScreen extends ConsumerWidget {
                     ),
                   ),
 
-                  // Perforated Divider Line
                   _buildPerforatedDivider(),
 
-                  // Meta Details
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 16, 20, 12),
                     child: Column(
@@ -164,7 +159,6 @@ class ReceiptScreen extends ConsumerWidget {
 
                   const Divider(height: 1, indent: 20, endIndent: 20),
 
-                  // Purchased Products Table
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 14, 20, 14),
                     child: Column(
@@ -219,7 +213,6 @@ class ReceiptScreen extends ConsumerWidget {
 
                   _buildPerforatedDivider(),
 
-                  // Totals Section
                   Padding(
                     padding: const EdgeInsets.fromLTRB(20, 16, 20, 20),
                     child: Column(
@@ -271,7 +264,6 @@ class ReceiptScreen extends ConsumerWidget {
                     ),
                   ),
 
-                  // Footer Message
                   Padding(
                     padding: const EdgeInsets.only(
                       bottom: 24,
@@ -293,7 +285,6 @@ class ReceiptScreen extends ConsumerWidget {
             ),
             const SizedBox(height: 24),
 
-            // Action Buttons
             Row(
               children: [
                 Expanded(

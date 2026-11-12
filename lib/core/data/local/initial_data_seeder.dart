@@ -8,7 +8,6 @@ class InitialDataSeeder {
   static Future<void> seedAll(Database db) async {
     final batch = db.batch();
 
-    // 1. Seed Store Settings
     batch.insert(
       AppTables.storeSettings,
       {
@@ -25,7 +24,6 @@ class InitialDataSeeder {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
-    // 2. Seed Default Cashier & Admin Users
     batch.insert(
       AppTables.users,
       {
@@ -54,10 +52,9 @@ class InitialDataSeeder {
       conflictAlgorithm: ConflictAlgorithm.replace,
     );
 
-    // 3. Seed Categories
     for (int i = 0; i < mockCategories.length; i++) {
       final cat = mockCategories[i];
-      if (cat.id == 'all') continue; // Kategori filter virtual
+      if (cat.id == 'all') continue;
 
       batch.insert(
         AppTables.categories,
@@ -72,7 +69,6 @@ class InitialDataSeeder {
       );
     }
 
-    // 4. Seed Addons
     for (final addon in mockAddons) {
       batch.insert(
         AppTables.addons,
@@ -88,7 +84,6 @@ class InitialDataSeeder {
       );
     }
 
-    // 5. Seed Products & Relasi Product-Addon
     for (final product in mockProducts) {
       batch.insert(
         AppTables.products,
@@ -110,7 +105,6 @@ class InitialDataSeeder {
         conflictAlgorithm: ConflictAlgorithm.replace,
       );
 
-      // Relasi Many-to-Many product_addons
       for (final addon in product.availableAddons) {
         batch.insert(
           AppTables.productAddons,
@@ -125,7 +119,6 @@ class InitialDataSeeder {
 
     await batch.commit(noResult: true);
 
-    // 6. Seed Sample Transactions
     for (final tx in mockTransactions) {
       await _seedTransaction(db, tx);
     }

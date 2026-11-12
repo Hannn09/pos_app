@@ -178,7 +178,6 @@ class _AddEditProductScreenState extends ConsumerState<AddEditProductScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              // Image Upload / Preview Box
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.all(20),
@@ -303,7 +302,6 @@ class _AddEditProductScreenState extends ConsumerState<AddEditProductScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Product Info Form Card
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -384,7 +382,6 @@ class _AddEditProductScreenState extends ConsumerState<AddEditProductScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Pricing & Stock Card
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -488,7 +485,6 @@ class _AddEditProductScreenState extends ConsumerState<AddEditProductScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Add-ons Applicability Card
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
@@ -558,7 +554,6 @@ class _AddEditProductScreenState extends ConsumerState<AddEditProductScreen> {
               ),
               const SizedBox(height: 24),
 
-              // Save Button
               SizedBox(
                 width: double.infinity,
                 height: 52,

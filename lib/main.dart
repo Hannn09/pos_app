@@ -7,7 +7,6 @@ import 'package:food_pos/theme/app_themes.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Inisialisasi Database SQLite & seeding otomatis saat pertama kali run
   await DatabaseHelper.instance.database;
   await DatabaseHelper.instance.inspectDatabase();
 

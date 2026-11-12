@@ -1,4 +1,3 @@
-/// Definisi Nama Tabel dan Kolom SQLite untuk POS Application
 class AppTables {
   static const String users = 'users';
   static const String categories = 'categories';

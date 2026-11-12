@@ -9,11 +9,9 @@ class PrinterService {
   static final PrinterService instance = PrinterService._internal();
   PrinterService._internal();
 
-  /// Periksa apakah platform mendukung Bluetooth printing
   bool get isSupportedPlatform =>
       !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 
-  /// Periksa status aktif Bluetooth di perangkat
   Future<bool> isBluetoothEnabled() async {
     if (!isSupportedPlatform) return false;
     try {
@@ -24,7 +22,6 @@ class PrinterService {
     }
   }
 
-  /// Periksa izin Bluetooth (khusus Android)
   Future<bool> checkPermission() async {
     if (!isSupportedPlatform) return true;
     try {
@@ -35,7 +32,6 @@ class PrinterService {
     }
   }
 
-  /// Dapatkan daftar perangkat Bluetooth yang sudah ter-pairing
   Future<List<BluetoothInfo>> getPairedDevices() async {
     if (!isSupportedPlatform) return [];
     try {
@@ -48,7 +44,6 @@ class PrinterService {
     }
   }
 
-  /// Hubungkan ke printer melalui MAC Address
   Future<bool> connect(String macAddress) async {
     if (!isSupportedPlatform) return false;
     try {
@@ -62,7 +57,6 @@ class PrinterService {
     }
   }
 
-  /// Putuskan koneksi printer
   Future<bool> disconnect() async {
     if (!isSupportedPlatform) return true;
     try {
@@ -75,7 +69,6 @@ class PrinterService {
     }
   }
 
-  /// Periksa apakah printer saat ini sedang terhubung
   Future<bool> isConnected() async {
     if (!isSupportedPlatform) return false;
     try {
@@ -86,7 +79,6 @@ class PrinterService {
     }
   }
 
-  /// Cetak raw bytes ke printer
   Future<bool> printBytes(List<int> bytes) async {
     if (!isSupportedPlatform) return false;
     try {
@@ -104,7 +96,6 @@ class PrinterService {
     }
   }
 
-  /// Generate struk uji coba (Test Ticket)
   Future<List<int>> generateTestTicketBytes({
     PaperSize paperSize = PaperSize.mm58,
   }) async {
@@ -156,7 +147,6 @@ class PrinterService {
     return bytes;
   }
 
-  /// Generate struk transaksi pesanan POS lengkap
   Future<List<int>> generateReceiptBytes({
     required PosTransaction transaction,
     PaperSize paperSize = PaperSize.mm58,
@@ -167,7 +157,6 @@ class PrinterService {
 
     bytes += generator.reset();
 
-    // 1. Header Struk
     bytes += generator.text(
       'GREEN BITES CAFE',
       styles: const PosStyles(
@@ -190,7 +179,6 @@ class PrinterService {
       styles: const PosStyles(align: PosAlign.center),
     );
 
-    // 2. Metadata Transaksi
     final dateStr =
         '${transaction.dateTime.year}-${transaction.dateTime.month.toString().padLeft(2, '0')}-${transaction.dateTime.day.toString().padLeft(2, '0')} ${transaction.dateTime.hour.toString().padLeft(2, '0')}:${transaction.dateTime.minute.toString().padLeft(2, '0')}';
 
@@ -238,7 +226,6 @@ class PrinterService {
       styles: const PosStyles(align: PosAlign.center),
     );
 
-    // 3. Daftar Item Pesanan
     for (final item in transaction.items) {
       bytes += generator.text(
         item.product.name,
@@ -261,7 +248,6 @@ class PrinterService {
         ),
       ]);
 
-      // Cetak Addon jika ada
       for (final addon in item.selectedAddons) {
         bytes += generator.row([
           PosColumn(
@@ -290,7 +276,6 @@ class PrinterService {
       styles: const PosStyles(align: PosAlign.center),
     );
 
-    // 4. Perhitungan Subtotal, Diskon, Pajak, Grand Total
     bytes += generator.row([
       PosColumn(text: 'Subtotal:', width: 6),
       PosColumn(
@@ -370,7 +355,6 @@ class PrinterService {
       styles: const PosStyles(align: PosAlign.center),
     );
 
-    // 5. Footer Struk
     bytes += generator.text(
       'Thank you for your visit!',
       styles: const PosStyles(align: PosAlign.center, bold: true),

@@ -35,7 +35,6 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
     final topProducts = topProductsAsync.value ?? [];
     final chartData = chartDataAsync.value ?? [];
 
-    // Hitung max amount untuk scaling tinggi chart
     double maxChartAmount = 1.0;
     for (final c in chartData) {
       final amt = (c['amount'] as num?)?.toDouble() ?? 0.0;
@@ -72,7 +71,6 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Date Range Selector
             Container(
               padding: const EdgeInsets.all(4),
               decoration: BoxDecoration(
@@ -111,7 +109,6 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
             ),
             const SizedBox(height: 16),
 
-            // KPI Grid (Revenue, Total Orders, Avg Ticket, Items Sold)
             Skeletonizer(
               enabled: isLoading,
               child: Column(
@@ -168,7 +165,6 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Revenue Chart Card
             Skeletonizer(
               enabled: isLoading,
               child: Container(
@@ -226,7 +222,6 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
                       ],
                     ),
                     const SizedBox(height: 24),
-                    // Visual Bar Chart
                     SizedBox(
                       height: 140,
                       child: chartData.isEmpty
@@ -290,7 +285,6 @@ class _ReportsScreenState extends ConsumerState<ReportsScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Top Selling Menu Items
             Skeletonizer(
               enabled: isLoading,
               child: Container(

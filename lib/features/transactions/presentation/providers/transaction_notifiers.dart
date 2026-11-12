@@ -2,7 +2,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:food_pos/core/models/pos_models.dart';
 import 'package:food_pos/features/transactions/domain/providers/transaction_providers.dart';
 
-// Helper Rentang Tanggal
 class DateRangeHelper {
   static (DateTime?, DateTime?) getRangeForFilter(String filter) {
     final now = DateTime.now();
@@ -37,7 +36,6 @@ class DateRangeHelper {
   }
 }
 
-// 1. Notifier Kata Kunci Pencarian Transaksi
 class TransactionSearchQueryNotifier extends Notifier<String> {
   @override
   String build() => '';
@@ -49,7 +47,6 @@ final transactionSearchQueryProvider =
     NotifierProvider<TransactionSearchQueryNotifier, String>(
         TransactionSearchQueryNotifier.new);
 
-// 2. Notifier Filter Tanggal Transaksi ('Today', 'Yesterday', 'Last 7 Days', 'This Month', 'All')
 class TransactionDateFilterNotifier extends Notifier<String> {
   @override
   String build() => 'Today';
@@ -61,7 +58,6 @@ final transactionDateFilterProvider =
     NotifierProvider<TransactionDateFilterNotifier, String>(
         TransactionDateFilterNotifier.new);
 
-// 3. Notifier Filter Metode Pembayaran ('All', 'Cash', 'QRIS')
 class TransactionPaymentFilterNotifier extends Notifier<String> {
   @override
   String build() => 'All';
@@ -73,7 +69,6 @@ final transactionPaymentFilterProvider =
     NotifierProvider<TransactionPaymentFilterNotifier, String>(
         TransactionPaymentFilterNotifier.new);
 
-// 4. Provider List Transaksi dari Repository dengan filter tanggal & pencarian
 final transactionsListProvider =
     FutureProvider<List<PosTransaction>>((ref) async {
   final repo = ref.watch(transactionRepositoryProvider);
@@ -95,7 +90,6 @@ final transactionsListProvider =
       .toList();
 });
 
-// 5. Notifier Rentang Filter Laporan ('Today', 'This Week', 'This Month')
 class ReportRangeNotifier extends Notifier<String> {
   @override
   String build() => 'Today';
@@ -106,7 +100,6 @@ class ReportRangeNotifier extends Notifier<String> {
 final reportRangeProvider =
     NotifierProvider<ReportRangeNotifier, String>(ReportRangeNotifier.new);
 
-// 6. Provider Ringkasan Laporan Aktual dari Database
 final reportSummaryProvider =
     FutureProvider<Map<String, dynamic>>((ref) async {
   final repo = ref.watch(transactionRepositoryProvider);
@@ -119,7 +112,6 @@ final reportSummaryProvider =
   );
 });
 
-// 7. Provider Produk Terlaris Aktual dari Database
 final reportTopProductsProvider =
     FutureProvider<List<Map<String, dynamic>>>((ref) async {
   final repo = ref.watch(transactionRepositoryProvider);
@@ -133,7 +125,6 @@ final reportTopProductsProvider =
   );
 });
 
-// 8. Provider Data Grafik Penjualan Aktual dari Database
 final reportSalesChartProvider =
     FutureProvider<List<Map<String, dynamic>>>((ref) async {
   final repo = ref.watch(transactionRepositoryProvider);
@@ -147,14 +138,12 @@ final reportSalesChartProvider =
   );
 });
 
-// 9. Provider Ringkasan Penjualan Hari Ini (Dashboard legacy compatibility)
 final todaySalesSummaryProvider =
     FutureProvider<Map<String, dynamic>>((ref) async {
   final repo = ref.watch(transactionRepositoryProvider);
   return await repo.getSalesSummary(date: DateTime.now());
 });
 
-// 10. Provider Histori Penjualan Harian
 final dailySalesHistoryProvider =
     FutureProvider<List<Map<String, dynamic>>>((ref) async {
   final repo = ref.watch(transactionRepositoryProvider);

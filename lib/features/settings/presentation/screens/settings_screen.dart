@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:food_pos/core/data/local/database_helper.dart';
 import 'package:food_pos/core/services/printer/printer_notifier.dart';
 import 'package:food_pos/features/auth/presentation/providers/auth_notifiers.dart';
 import 'package:food_pos/routers/app_routes.dart';
@@ -18,85 +17,6 @@ class SettingsScreen extends ConsumerStatefulWidget {
 class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   bool _isAutoPrintReceipt = true;
   bool _isCashDrawerBeep = true;
-  bool _isInspecting = false;
-
-  Future<void> _inspectLocalDatabase() async {
-    setState(() => _isInspecting = true);
-
-    try {
-      final summary = await DatabaseHelper.instance.inspectDatabase();
-      if (!mounted) return;
-
-      showDialog(
-        context: context,
-        builder: (ctx) => AlertDialog(
-          backgroundColor: whiteColor,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-          title: Row(
-            children: [
-              Icon(IconsaxPlusLinear.data, color: primaryColor),
-              const SizedBox(width: 8),
-              Text(
-                'SQLite Database Status',
-                style: boldTextStyle.copyWith(fontSize: 16, color: blackColor),
-              ),
-            ],
-          ),
-          content: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  'Database file: ${DatabaseHelper.dbName}',
-                  style: semiBoldTextStyle.copyWith(
-                    fontSize: 13,
-                    color: primaryColor,
-                  ),
-                ),
-                const SizedBox(height: 12),
-                ...summary.entries.map(
-                  (entry) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 3),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          entry.key,
-                          style: regularTextStyle.copyWith(
-                            fontSize: 13,
-                            color: greyColor,
-                          ),
-                        ),
-                        Text(
-                          '${entry.value} rows',
-                          style: boldTextStyle.copyWith(
-                            fontSize: 13,
-                            color: blackColor,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            ElevatedButton(
-              style: primaryButtonStyle,
-              onPressed: () => Navigator.pop(ctx),
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
-    } finally {
-      if (mounted) setState(() => _isInspecting = false);
-    }
-  }
 
   void _openPrinterModal(BuildContext context) {
     ref.read(printerNotifierProvider.notifier).scanDevices();
@@ -124,7 +44,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Header
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -160,7 +79,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Paper Size Selector
                     Text(
                       'PAPER SIZE',
                       style: boldTextStyle.copyWith(
@@ -202,7 +120,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                     ),
                     const SizedBox(height: 16),
 
-                    // Paired Devices Header
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -284,7 +201,8 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
                         itemCount: printer.availableDevices.length,
-                        separatorBuilder: (_, index) => const SizedBox(height: 8),
+                        separatorBuilder: (_, index) =>
+                            const SizedBox(height: 8),
                         itemBuilder: (context, index) {
                           final device = printer.availableDevices[index];
                           final isThisConnected =
@@ -396,7 +314,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
                     const SizedBox(height: 20),
 
-                    // Test Print Button (when connected)
                     if (printer.isConnected)
                       SizedBox(
                         width: double.infinity,
@@ -527,7 +444,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Cashier Profile Card
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -600,99 +516,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Local SQLite Database Storage
-            _sectionLabel('LOCAL SQLITE DATABASE'),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: whiteColor,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: borderColor),
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        padding: const EdgeInsets.all(8),
-                        decoration: BoxDecoration(
-                          color: primaryLightColor,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          IconsaxPlusLinear.data,
-                          color: primaryColor,
-                          size: 20,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'SQLite Local Storage',
-                              style: boldTextStyle.copyWith(
-                                fontSize: 14,
-                                color: blackColor,
-                              ),
-                            ),
-                            Text(
-                              'Fast Offline-First Engine • FFI Active',
-                              style: regularTextStyle.copyWith(
-                                fontSize: 12,
-                                color: greyColor,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      ElevatedButton(
-                        style: primaryButtonStyle.copyWith(
-                          padding: const WidgetStatePropertyAll(
-                            EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                          ),
-                        ),
-                        onPressed: _isInspecting ? null : _inspectLocalDatabase,
-                        child: _isInspecting
-                            ? const SizedBox(
-                                width: 16,
-                                height: 16,
-                                child: CircularProgressIndicator(
-                                  strokeWidth: 2,
-                                  color: Colors.white,
-                                ),
-                              )
-                            : const Text('Inspect DB'),
-                      ),
-                    ],
-                  ),
-                  const Divider(height: 24),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Database Engine Status',
-                        style: regularTextStyle.copyWith(
-                          fontSize: 13,
-                          color: greyColor,
-                        ),
-                      ),
-                      Text(
-                        'Active & Healthy',
-                        style: semiBoldTextStyle.copyWith(
-                          fontSize: 13,
-                          color: primaryColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
-            // Hardware & Peripheral Preferences
             _sectionLabel('HARDWARE & PRINTING'),
             Container(
               decoration: BoxDecoration(
@@ -800,7 +623,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             ),
             const SizedBox(height: 24),
 
-            // Logout Button
             SizedBox(
               width: double.infinity,
               height: 52,

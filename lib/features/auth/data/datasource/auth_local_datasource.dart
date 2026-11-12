@@ -38,7 +38,6 @@ class AuthLocalDataSource {
     final userMap = results.first;
     final storedHash = userMap[UserColumns.pinHash] as String?;
 
-    // Verifikasi password (cocokkan hash SHA-256 atau fallback plain text untuk dummy seed data '1234')
     final isPasswordValid = storedHash == hashedPassword || storedHash == cleanPassword;
     if (!isPasswordValid) {
       throw Exception('Invalid password / PIN');
@@ -46,7 +45,6 @@ class AuthLocalDataSource {
 
     final user = UserTableModel.fromMap(userMap);
 
-    // Generate local token & simpan session
     final token = 'offline_token_${user.id}_${DateTime.now().millisecondsSinceEpoch}';
     await saveSession(user, token);
 
@@ -64,7 +62,6 @@ class AuthLocalDataSource {
     final db = await _dbHelper.database;
     final cleanUsername = username.trim().toLowerCase();
 
-    // Cek apakah username sudah dipakai
     final existing = await db.query(
       AppTables.users,
       where: 'LOWER(${UserColumns.username}) = ?',
@@ -96,7 +93,6 @@ class AuthLocalDataSource {
       newUser.toMap(pinHash: hashedPassword),
     );
 
-    // Buat session lokal
     final token = 'offline_token_${newUser.id}_${DateTime.now().millisecondsSinceEpoch}';
     await saveSession(newUser, token);
 

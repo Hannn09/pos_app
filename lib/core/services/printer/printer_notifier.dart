@@ -13,7 +13,7 @@ class PrinterState {
   final String? connectedDeviceName;
   final String? connectedMacAddress;
   final List<BluetoothInfo> availableDevices;
-  final String paperSize; // '58mm' or '80mm'
+  final String paperSize;
   final String? statusMessage;
 
   const PrinterState({
@@ -85,7 +85,6 @@ class PrinterNotifier extends Notifier<PrinterState> {
     );
   }
 
-  /// Pindai perangkat Bluetooth yang terpasang
   Future<void> scanDevices() async {
     state = state.copyWith(isScanning: true, statusMessage: 'Scanning devices...');
 
@@ -108,7 +107,6 @@ class PrinterNotifier extends Notifier<PrinterState> {
     );
   }
 
-  /// Hubungkan ke perangkat Bluetooth printer
   Future<bool> connect(BluetoothInfo device) async {
     state = state.copyWith(
       isConnecting: true,
@@ -140,7 +138,6 @@ class PrinterNotifier extends Notifier<PrinterState> {
     }
   }
 
-  /// Putuskan koneksi printer
   Future<void> disconnect() async {
     await _service.disconnect();
 
@@ -155,14 +152,12 @@ class PrinterNotifier extends Notifier<PrinterState> {
     );
   }
 
-  /// Ganti ukuran kertas (58mm / 80mm)
   Future<void> setPaperSize(String size) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString(_prefPaperKey, size);
     state = state.copyWith(paperSize: size);
   }
 
-  /// Cetak uji coba
   Future<bool> printTestTicket() async {
     try {
       final paper =
@@ -175,7 +170,6 @@ class PrinterNotifier extends Notifier<PrinterState> {
     }
   }
 
-  /// Cetak struk transaksi pesanan POS
   Future<bool> printReceipt(PosTransaction transaction) async {
     try {
       final paper =

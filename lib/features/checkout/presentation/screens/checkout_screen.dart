@@ -26,7 +26,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
   late List<CartItem> _items;
   late double _baseSubtotal;
 
-  String _paymentMethod = 'Cash'; // Cash, QRIS, Debit
+  String _paymentMethod = 'Cash';
   double _discountPercentage = 0.0;
   double _fixedDiscount = 0.0;
   String _activeDiscountKey = 'none';
@@ -51,7 +51,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     _baseSubtotal =
         widget.subtotal ?? _items.fold(0, (sum, item) => sum + item.totalPrice);
 
-    // Default cash received to exact amount initially
     final initialTotal = _calculateGrandTotal();
     _cashReceived = initialTotal;
     _cashReceivedController.text = initialTotal.round().toString();
@@ -72,7 +71,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
 
   double get _taxableAmount =>
       (_baseSubtotal - _discountAmount).clamp(0, double.infinity);
-  double get _taxAmount => _taxableAmount * 0.10; // PB1 10%
+  double get _taxAmount => _taxableAmount * 0.10;
   double get _grandTotal => _taxableAmount + _taxAmount;
   double get _change => _cashReceived - _grandTotal;
 
@@ -145,10 +144,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     );
 
     try {
-      // Simpan transaksi secara atomik ke database SQLite
       await ref.read(transactionRepositoryProvider).saveTransaction(newTx);
 
-      // Invalidate provider agar layar histori transaksi & laporan langsung terupdate
       ref.invalidate(transactionsListProvider);
       ref.invalidate(reportSummaryProvider);
       ref.invalidate(reportTopProductsProvider);
@@ -157,7 +154,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
       ref.invalidate(dailySalesHistoryProvider);
       ref.invalidate(filteredProductsProvider);
 
-      // Reset keranjang POS
       ref.read(posCartProvider.notifier).clearCart();
 
       if (!mounted) return;
@@ -221,7 +217,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Order Summary Card
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -316,7 +311,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Discounts Selection
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -368,7 +362,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Payment Method Tabs
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -407,7 +400,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             ),
             const SizedBox(height: 16),
 
-            // Cash Received Input & Shortcuts
             if (_paymentMethod == 'Cash')
               Container(
                 padding: const EdgeInsets.all(16),
@@ -511,7 +503,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
               ),
             const SizedBox(height: 16),
 
-            // Calculation Breakdown Card
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
@@ -572,11 +563,11 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                             children: [
                               Icon(
                                 _change >= 0
-                                    ? IconsaxPlusLinear.tick_circle
-                                    : IconsaxPlusLinear.danger,
-                                size: 18,
-                                color: _change >= 0 ? primaryColor : redColor,
-                              ),
+                                     ? IconsaxPlusLinear.tick_circle
+                                     : IconsaxPlusLinear.danger,
+                                 size: 18,
+                                 color: _change >= 0 ? primaryColor : redColor,
+                               ),
                               const SizedBox(width: 8),
                               Text(
                                 _change >= 0
@@ -607,7 +598,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
             ),
             const SizedBox(height: 24),
 
-            // Complete Payment Button
             SizedBox(
               width: double.infinity,
               height: 56,
@@ -657,7 +647,6 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
           _activeDiscountKey = key;
           _discountPercentage = percent;
           _fixedDiscount = fixed;
-          // readjust cash if it was exact
           _cashReceived = _calculateGrandTotal();
           _cashReceivedController.text = _cashReceived.round().toString();
         });

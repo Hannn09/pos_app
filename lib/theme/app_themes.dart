@@ -62,7 +62,6 @@ Color dividerColor = const Color(0xFFEEF2F0);
 Color borderColor = const Color(0xFFE6ECE9);
 Color pastelColor = const Color(0xFFC3E6D8);
 
-// Dark mode specific tokens
 Color scaffoldDarkColor = Color(0xFF1E1E1E);
 Color dialogDarkColor = Color(0xFF2A2A2A);
 Color dividerDarkColor = Color(0xFF2C2C2C);
@@ -134,7 +133,6 @@ final textFieldDecoration = InputDecoration(
 final searchTextField = InputDecoration(
   filled: true,
   errorStyle: errorTextStyle,
-  // prefixIcon: Icon(Icons.search, color: greyColor),
   prefixIconConstraints: BoxConstraints.tight(const Size(65, 55)),
   prefixIcon: Container(
     padding: const EdgeInsets.all(15),
@@ -209,13 +207,11 @@ final dateTimeTextField = InputDecoration(
     borderRadius: BorderRadius.circular(10),
     borderSide: BorderSide.none,
   ),
-  // contentPadding: EdgeInsets.zero,
 );
 
 final dateTimeModalTextField = InputDecoration(
   filled: true,
   errorStyle: errorTextStyle,
-  // prefixIcon: Icon(Icons.search, color: greyColor),
   prefixIconConstraints: BoxConstraints.tight(const Size(65, 55)),
   prefixIcon: Container(
     padding: const EdgeInsets.all(15),

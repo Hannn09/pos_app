@@ -136,7 +136,6 @@ class PosTransaction {
   });
 }
 
-// Default F&B Sample Data
 final List<PosCategory> mockCategories = [
   const PosCategory(id: 'all', name: 'All Menu', icon: IconsaxPlusLinear.category, itemCount: 18),
   const PosCategory(id: 'coffee', name: 'Coffee & Tea', icon: IconsaxPlusLinear.coffee, itemCount: 7),
@@ -191,7 +190,7 @@ final List<PosProduct> mockProducts = [
     categoryId: 'bakery',
     price: 28000,
     costPrice: 11000,
-    stock: 4, // low stock!
+    stock: 4,
     icon: IconsaxPlusLinear.cake,
     availableAddons: [],
   ),
@@ -221,7 +220,7 @@ final List<PosProduct> mockProducts = [
     categoryId: 'beverage',
     price: 28000,
     costPrice: 9000,
-    stock: 0, // out of stock!
+    stock: 0,
     isAvailable: false,
     icon: IconsaxPlusLinear.glass,
     availableAddons: [mockAddons[5]],
@@ -242,7 +241,7 @@ final List<PosProduct> mockProducts = [
     categoryId: 'bakery',
     price: 30000,
     costPrice: 12000,
-    stock: 3, // low stock!
+    stock: 3,
     icon: IconsaxPlusLinear.cake,
     availableAddons: [],
   ),
@@ -321,6 +320,6 @@ final List<PosTransaction> mockTransactions = [
     paymentMethod: 'Cash',
     cashReceived: 200000,
     changeGiven: 30600,
-    isOfflineSynced: false, // offline pending sync badge!
+    isOfflineSynced: false,
   ),
 ];

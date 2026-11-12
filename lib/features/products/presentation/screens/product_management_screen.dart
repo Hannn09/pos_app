@@ -546,7 +546,6 @@ class _ProductManagementScreenState
 
     return Column(
       children: [
-        // Search & Category Filter
         Container(
           color: whiteColor,
           padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
@@ -607,7 +606,6 @@ class _ProductManagementScreenState
           ),
         ),
 
-        // Product List
         Expanded(
           child: _filteredProducts.isEmpty
               ? Center(

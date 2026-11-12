@@ -33,7 +33,6 @@ class AuthState {
 class AuthNotifier extends Notifier<AuthState> {
   @override
   AuthState build() {
-    // Cek status sesi lokal saat inisialisasi
     _checkInitialAuth();
     return const AuthState(isLoading: true);
   }

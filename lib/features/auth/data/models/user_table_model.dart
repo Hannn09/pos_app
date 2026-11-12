@@ -52,7 +52,6 @@ class UserTableModel {
     return map;
   }
 
-  // To JSON for SharedPreferences session cache
   Map<String, dynamic> toJson() {
     return {
       'id': id,

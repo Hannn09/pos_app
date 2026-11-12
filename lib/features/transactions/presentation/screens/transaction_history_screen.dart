@@ -66,13 +66,11 @@ class _TransactionHistoryScreenState
       ),
       body: Column(
         children: [
-          // Filter & Search Header
           Container(
             color: whiteColor,
             padding: const EdgeInsets.all(14),
             child: Column(
               children: [
-                // Search Field
                 TextField(
                   controller: _searchController,
                   onChanged: (val) {
@@ -107,7 +105,6 @@ class _TransactionHistoryScreenState
                 ),
                 const SizedBox(height: 10),
 
-                // Date Filter Chips
                 Row(
                   children: [
                     Expanded(
@@ -155,7 +152,6 @@ class _TransactionHistoryScreenState
                 ),
                 const SizedBox(height: 8),
 
-                // Payment Method Filter Chips
                 Row(
                   children: [
                     Text(
@@ -207,7 +203,6 @@ class _TransactionHistoryScreenState
             ),
           ),
 
-          // Total Summary Ribbon
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
@@ -235,7 +230,6 @@ class _TransactionHistoryScreenState
             ),
           ),
 
-          // Transaction List or Skeletonizer
           Expanded(
             child: Skeletonizer(
               enabled: isLoading,
@@ -313,7 +307,6 @@ class _TransactionHistoryScreenState
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                // Top Row: Receipt # & Status Badge
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -374,7 +367,6 @@ class _TransactionHistoryScreenState
                                   ],
                                 ),
                                 const Divider(height: 16),
-                                // Middle Row: Items summary & Table
                                 Text(
                                   itemsSummary,
                                   maxLines: 1,
@@ -385,7 +377,6 @@ class _TransactionHistoryScreenState
                                   ),
                                 ),
                                 const SizedBox(height: 8),
-                                // Bottom Row: Time, Method & Grand Total
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,

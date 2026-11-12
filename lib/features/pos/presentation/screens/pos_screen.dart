@@ -304,7 +304,6 @@ class _PosScreenState extends ConsumerState<PosScreen> {
           ),
           child: Row(
             children: [
-              // User Avatar
               Container(
                 width: 44,
                 height: 44,
@@ -380,13 +379,11 @@ class _PosScreenState extends ConsumerState<PosScreen> {
       ),
       body: Column(
         children: [
-          // Search & Category Filters
           Container(
             color: whiteColor,
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 12),
             child: Column(
               children: [
-                // Search Input
                 Container(
                   height: 44,
                   decoration: BoxDecoration(
@@ -430,7 +427,6 @@ class _PosScreenState extends ConsumerState<PosScreen> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                // Horizontal Categories
                 categoriesAsync.when(
                   loading: () => Skeletonizer(
                     enabled: true,
@@ -517,7 +513,6 @@ class _PosScreenState extends ConsumerState<PosScreen> {
             ),
           ),
 
-          // Product Grid
           Expanded(
             child: productsAsync.when(
               loading: () => Skeletonizer(
@@ -604,7 +599,6 @@ class _PosScreenState extends ConsumerState<PosScreen> {
         ],
       ),
 
-      // Floating Bottom Cart Bar
       bottomNavigationBar: cart.isEmpty
           ? null
           : Container(
@@ -623,7 +617,6 @@ class _PosScreenState extends ConsumerState<PosScreen> {
               child: SafeArea(
                 child: Row(
                   children: [
-                    // Cart Info & Badge
                     GestureDetector(
                       onTap: _openCartSheet,
                       child: Row(
@@ -670,7 +663,6 @@ class _PosScreenState extends ConsumerState<PosScreen> {
                       ),
                     ),
                     const Spacer(),
-                    // Prominent Checkout Button
                     ElevatedButton(
                       style: primaryButtonStyle.copyWith(
                         padding: const WidgetStatePropertyAll(
@@ -707,7 +699,6 @@ class _PosScreenState extends ConsumerState<PosScreen> {
   }
 }
 
-// Product Grid Card Component
 class _ProductGridCard extends StatelessWidget {
   final PosProduct product;
   final VoidCallback onTap;
@@ -736,7 +727,6 @@ class _ProductGridCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // Product Image / Icon Container
                 Expanded(
                   child: Stack(
                     children: [
@@ -765,7 +755,6 @@ class _ProductGridCard extends StatelessWidget {
                                 ),
                         ),
                       ),
-                      // Stock State Badge
                       if (isOut)
                         Positioned(
                           top: 8,
@@ -832,7 +821,6 @@ class _ProductGridCard extends StatelessWidget {
                             ),
                           ),
                         ),
-                      // Add-on badge if available
                       if (product.availableAddons.isNotEmpty && !isOut)
                         Positioned(
                           bottom: 6,
@@ -865,7 +853,6 @@ class _ProductGridCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10),
-                // Product Name
                 Text(
                   product.name,
                   maxLines: 1,
@@ -876,7 +863,6 @@ class _ProductGridCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 4),
-                // Price & Add button
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -911,7 +897,6 @@ class _ProductGridCard extends StatelessWidget {
   }
 }
 
-// Addon Selector Modal Sheet
 class _AddonSelectorModal extends StatefulWidget {
   final PosProduct product;
   final Function(List<PosAddon> selectedAddons, String? notes, int quantity)
@@ -1059,7 +1044,6 @@ class _AddonSelectorModalState extends State<_AddonSelectorModal> {
               ),
             ),
             const SizedBox(height: 20),
-            // Quantity & Add Button
             Row(
               children: [
                 Container(
@@ -1123,7 +1107,6 @@ class _AddonSelectorModalState extends State<_AddonSelectorModal> {
   }
 }
 
-// Shopping Cart Bottom Sheet
 class _CartBottomSheet extends StatefulWidget {
   final List<CartItem> cart;
   final double subtotal;
@@ -1146,14 +1129,14 @@ class _CartBottomSheet extends StatefulWidget {
 }
 
 class _CartBottomSheetState extends State<_CartBottomSheet> {
-  double _discountRate = 0.0; // 0.05 for 5%, 0.1 for 10%
+  double _discountRate = 0.0;
   String _selectedDiscount = 'None';
 
   @override
   Widget build(BuildContext context) {
     final discountAmount = widget.subtotal * _discountRate;
     final taxable = widget.subtotal - discountAmount;
-    final taxAmount = taxable * 0.10; // 10% PB1
+    final taxAmount = taxable * 0.10;
     final grandTotal = taxable + taxAmount;
 
     return Container(
@@ -1166,7 +1149,6 @@ class _CartBottomSheetState extends State<_CartBottomSheet> {
       ),
       child: Column(
         children: [
-          // Header
           Padding(
             padding: const EdgeInsets.fromLTRB(20, 16, 12, 12),
             child: Row(
@@ -1219,7 +1201,6 @@ class _CartBottomSheetState extends State<_CartBottomSheet> {
           ),
           const Divider(height: 1),
 
-          // Cart Items List
           Expanded(
             child: widget.cart.isEmpty
                 ? Center(
@@ -1309,7 +1290,6 @@ class _CartBottomSheetState extends State<_CartBottomSheet> {
                               ],
                             ),
                           ),
-                          // Counter
                           Container(
                             decoration: BoxDecoration(
                               color: scaffoldBackgroundColor,
@@ -1358,7 +1338,6 @@ class _CartBottomSheetState extends State<_CartBottomSheet> {
                   ),
           ),
 
-          // Bottom Calculation Card
           Container(
             padding: const EdgeInsets.fromLTRB(20, 14, 20, 20),
             decoration: BoxDecoration(
@@ -1376,7 +1355,6 @@ class _CartBottomSheetState extends State<_CartBottomSheet> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  // Quick Discount Chips
                   Row(
                     children: [
                       Text(
@@ -1432,7 +1410,6 @@ class _CartBottomSheetState extends State<_CartBottomSheet> {
                     ],
                   ),
                   const SizedBox(height: 10),
-                  // Breakdown
                   _calcRow('Subtotal', 'Rp ${formatCurrency(widget.subtotal)}'),
                   if (discountAmount > 0)
                     _calcRow(
@@ -1462,7 +1439,6 @@ class _CartBottomSheetState extends State<_CartBottomSheet> {
                     ],
                   ),
                   const SizedBox(height: 14),
-                  // Prominent Checkout Button
                   SizedBox(
                     width: double.infinity,
                     height: 52,
